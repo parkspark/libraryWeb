@@ -1,0 +1,21 @@
+C:\Users\pc\Desktop\alice\project_first\library_project\library
+
+set FLASK_APP=library
+
+set FLASK_ENV=development
+
+flask run
+
+127.0.0.1:5000
+
+
+
+이미지편집 사이트 https://pixlr.com/kr/x/#editor
+
+도움
+https://www.codingfactory.net/10731
+
+참조
+    -메인, 로그인, 회원가입창
+    넥슨
+    https://nxlogin.nexon.com/common/login.aspx

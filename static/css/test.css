@@ -1,0 +1,141 @@
+html {
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.pricing-header {
+  max-width: 700px;
+}
+
+.border-top { border-top: 1px solid #e5e5e5; }
+.border-bottom { border-bottom: 1px solid #e5e5e5; }
+
+.box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
+
+.card-header > img{
+  width: 100px !important;
+  height: 140px !important;
+  object-fit: cover;
+}
+
+.card-body{
+  height: 220px;
+}
+.card-body button{
+  position: absolute;
+  width: 85%;
+  bottom: 20px;
+
+}
+
+.book_info{
+  display: flex;
+  margin-top: 25px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+.book_info > img{
+  width: 300px;
+  margin-left: 100px;
+  margin-right: 150px;
+}
+.column_body{
+  display: flex;
+  height: fit-content;
+  margin-top: 22px;
+  border: 2px black solid;
+}
+.column{
+  padding: 0 20px;
+  margin: 10px 10px;
+  border-right: 2px solid;
+}
+
+.column > h6:last-child{
+  margin-bottom: 0;
+}
+
+.column_value{
+  padding: 0 10px;
+  margin: 10px 10px;
+}
+
+.column_value > h6:last-child{
+  margin-bottom: 0;
+}
+
+.book_intro{
+  border: 2px solid;
+}
+
+.book_description{
+  padding: 30px 30px 10px 30px;
+  word-break: keep-all;
+}
+
+.book_review{
+  border-top: 2px solid;
+}
+
+/*https://melthleeth.tistory.com/entry/HTML-CSS%EB%A1%9C-%EB%B3%84%EC%B0%8D%EA%B8%B0-Star-Rating*/
+
+.star-ratings {
+  margin-left: 22%;
+  color: #aaa9a9; 
+  position: relative;
+  unicode-bidi: bidi-override;
+  width: max-content;
+  -webkit-text-fill-color: transparent; /* Will override color (regardless of order) */
+  -webkit-text-stroke-width: 1.3px;
+  -webkit-text-stroke-color: #2b2a29;
+}
+ 
+.star-ratings-fill {
+  color: #fff58c;
+  padding: 0;
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  -webkit-text-fill-color: gold;
+}
+ 
+.star-ratings-base {
+  z-index: 0;
+  padding: 0;
+}
+
+.rating .rate_radio {
+  position: relative;
+  display: inline-block;
+  z-index: 20;
+  opacity: 0.001;
+  width: 60px;
+  height: 60px;
+  background-color: #fff;
+  cursor: pointer;
+  vertical-align: top;
+  display: none;
+}
+.rating .rate_radio + label {
+  position: relative;
+  display: inline-block;
+  margin-left: -4px;
+  z-index: 10;
+  width: 30px;
+  height: 30px;
+  background-image: url('../img/starrate.png');
+  background-repeat: no-repeat;
+  background-size: 30px 30px;
+  cursor: pointer;
+  background-color: black;
+}
+.rating .rate_radio:checked + label {
+  background-color: gold;
+}

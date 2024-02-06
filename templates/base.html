@@ -1,0 +1,66 @@
+{% block head %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script
+        src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link href="../static/css/test.css" rel="stylesheet">
+
+ </head>
+
+{% endblock %}
+<body>
+  {% block top %}
+    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow" style="Position: sticky;  top: 0;">
+        <h5 class="my-0 mr-md-auto font-weight-normal"><a href="/">레이서 도서관</a></h5>
+        <div style="margin-right: 1%;"> 접속 중 : {{ session['username'] }}</div>
+        <nav class="my-2 my-md-0 mr-md-3">
+            <a class="p-2 text-dark" href="/rent-log">대여기록</a>
+            <a class="p-2 text-dark" href="/checkin">반납하기</a>
+            <a class="p-2 text-dark" href="/logout">로그아웃</a>
+        </nav>
+    </div>
+    {% endblock %}
+    <div class="container">{% block content %} {% endblock %}</div>
+    <script>
+      //별점 마킹 모듈 프로토타입으로 생성
+        function Rating(){};
+        Rating.prototype.rate = 0;
+        Rating.prototype.setRate = function(newrate){
+            //별점 마킹 - 클릭한 별 이하 모든 별 체크 처리
+            this.rate = newrate;
+            let items = document.querySelectorAll('.rate_radio');
+            items.forEach(function(item, idx){
+                if(idx < newrate){
+                    item.checked = true;
+                }else{
+                    item.checked = false;
+                }
+            }); 
+            return this.rate
+        }
+        let rating = new Rating();//별점 인스턴스 생성
+  
+      document.addEventListener('DOMContentLoaded', function(){
+      //별점선택 이벤트 리스너
+      document.querySelector('.rating').addEventListener('click',function(e){
+          let elem = e.target;
+          let rate = 0
+          if(elem.classList.contains('rate_radio')){
+              rate = rating.setRate(parseInt(elem.value));
+              document.getElementById('total').dataset.rate = rate
+              document.getElementById('total').value = rate
+          }
+      })
+  });
+    </script>
+
+</body>
+</html>

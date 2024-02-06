@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% block content %}
+      <div class="row mb-3 text-center">
+        {% for book in books_info.items %}
+        <a name='book_{{book.id}}'></a>
+        <div class="card mr-md-3 mb-4 box-shadow" style="width: 16.5rem;">
+          <div class="card-header">
+            <img src="{{ url_for('static', filename='img/book_img/'+book.id|string+'.png') }}"> </img>
+          </div>
+          <div class="card-body">
+            <h6 class="card-title pricing-card-title"><a class="p-2 text-blue" href="/book-info/{{book.id}}">{{book.book_name}}</a></h6>
+            <ul class="list-unstyled mt-3 mb-4" style="position: absolute; bottom: 15%; left: 25%;">
+              <li>
+                <div class="star-ratings">
+                  <div class="star-ratings-fill space-x-2 text-lg" style="width:{{book.rate * 20}}%">
+                    <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                  </div>
+                  <div class="star-ratings-base space-x-2 text-lg">
+                    <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                  </div>
+                </div>
+              </li>
+              <li style="margin-left: 26px;">{{book.stock}}권 남음</li>
+            </ul>
+            <a class="p-2 text-dark" href="/rent-book/{{book.id}}"><button type="button" class="btn btn-lg btn-block btn-outline-primary">대여하기</button></a>
+          </div>
+        </div>
+        {% endfor %}
+        <!-- 페이징처리 시작 -->
+    <ul class="pagination justify-content-center" style="margin-left: 37.5%;">
+      <!-- 이전페이지 -->
+      {% if books_info.has_prev %}
+      <li class="page-item">
+          <a class="page-link" href="?page={{ books_info.prev_num }}">이전</a>
+      </li>
+      {% else %}
+      <li class="page-item disabled">
+          <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
+      </li>
+      {% endif %}
+      {% for page_num in books_info.iter_pages() %}
+          {% if page_num %}
+              {% if page_num != books_info.page %}
+              <li class="page-item">
+                  <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+              </li> 
+              {% else %}
+              <li class="page-item active" aria-current="page">
+                  <a class="page-link" href="#">{{ page_num }}</a>
+              </li>
+              {% endif %}
+         {% else %}
+              <li class="disabled">
+                  <a class="page-link" href="#">...</a>
+              </li>
+         {% endif %}
+      {% endfor %}
+      <!-- 다음페이지 -->
+      {% if books_info.has_next %}
+      <li class="page-item">
+          <a class="page-link" href="?page={{ books_info.next_num }}">다음</a>
+      </li>
+      {% else %}
+      <li class="page-item disabled">
+          <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
+      </li>
+      {% endif %}
+  </ul>
+  <!-- 페이징처리 끝 -->
+      </div>
+      {%with messages = get_flashed_messages()%}
+  {%if messages %}
+    <script type="text/javascript">
+      alert("{{messages[-1]}}");
+    </script>
+    {%endif%}
+  {%endwith%}
+      </div>
+
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="../static/js/assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+    <script src="../static/js/assets/js/vendor/popper.min.js"></script>
+    <script src="../static/js/dist/js/bootstrap.min.js"></script>
+    <script src="../static/js/assets/js/vendor/holder.min.js"></script>
+    <script>
+      Holder.addTheme("bright", {background: "gray", foreground: "gray", text: 'bright'});
+
+    </script>
+{% endblock %}

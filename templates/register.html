@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <title>앨리스 도서관 회원가입</title>
+</head>
+<body>
+    <div id="login">
+        <h3 class="text-center text-white pt-5">Login form</h3>
+        <div class="container">
+            <div id="login-row" class="row justify-content-center align-items-center">
+                <div id="login-column" class="col-md-6">
+                    <div id="login-box" class="col-md-12">
+                        <form id="login-form" class="form" action="/register" method="post">
+                            {{form.csrf_token}}
+                            <div style="text-align : center;">
+                                <img src="./static/img/welcome2.png" alt="welcome" loading="lazy">
+                            </div>
+                            <h3 class="text-center text-info">회 원 가 입</h3>
+                            <div class="form-group">
+                                {{form.username.label("이름", class='text-info')}}
+                                {{form.username(class="form-control", placeholder="이름")}}
+                            </div>
+                            <div class="form-group">
+                                {{form.email.label("이메일", class='text-info')}}
+                                {{form.email(class="form-control", placeholder="이메일")}}
+                            </div>
+                            <div class="form-group">
+                                {{form.password.label("비밀번호", class='text-info')}}
+                                {{form.password(class="form-control", placeholder="비밀번호")}}
+                            </div>
+                            <div class="form-group">
+                                {{form.password_2.label("비밀번호 확인", class='text-info')}}
+                                {{form.password_2(class="form-control", placeholder="비밀번호 확인")}}
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" name="submit" class="btn btn-info btn-block" value="가입하기">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {%with messages = get_flashed_messages()%}
+    {%if messages %}
+      <script type="text/javascript">
+        alert("{{messages[-1]}}");
+      </script>
+      {%endif%}
+    {%endwith%}
+</body>
+</html>

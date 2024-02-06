@@ -1,0 +1,276 @@
+11/19 
+
+데이터 모델
+
+- SQLite는 어떤 데이터베이스일까?
+
+파이썬 기본 패키지에 포함된 SQLite는 주로 소규모 프로젝트에서 사용하는 가벼운 파일을 기반으로 한 데이터베이스다. 
+보통은 SQLite로 개발을 빠르게 진행하고 이후 실제 운영 시스템에 반영할 때에는 좀 더 규모가 큰 데이터베이스를 사용한다.
+
+
+
+- 데이터베이스 관리 명령어 정리하기
+
+앞으로 모델을 추가하거나 변경할 때는 flask db migrate 명령이나 flask db upgrade 명령만 사용할 것이다. 
+즉, 앞으로 데이터베이스 관리를 위해 여러분이 기억해야 할 명령어는 이 2가지뿐이다.
+
+[표 2-2 데이터베이스 관리 명령어]
+
+
+flask db migrate	모델을 새로 생성하거나 변경할 때 사용 (실행하면 작업파일이 생성된다.)
+
+flask db upgrade	모델의 변경 내용을 실제 데이터베이스에 적용할 때 사용 
+(위에서 생성된 작업파일을 실행하여 데이터베이스를 변경한다.)
+이 밖에도 여러 명령이 있지만 특별한 경우가 아니라면 이 2가지 명령어를 주로 사용할 것이다. 
+명령어 종류를 확인하고 싶다면 명령 프롬프트에서 flask db 명령을 입력하자.
+
+
+- pandas read 트러블 슈팅
+
+    -FileNotFoundError: [Errno 2] No such file or directory: 'book_prac.csv'
+        같은 폴더에 있어서 될줄 알았는데 오류발생
+        그래서 경로 넣어줌 -> 경로는 읽는데 아래 오류 발생
+
+    - SyntaxError: (unicode error) 'unicodeescape' codec can't decode bytes in position 2-3: truncated \UXXXXXXXX escape
+    (\UXXXXXXXX 오류 해결)
+    \ 역슬래쉬 되어있던것을 모두 / 로 바꾸니 해결됨. 
+
+
+
+sign in = log in 
+sign up = register, join, creat an account
+    log는 통나무를 의미하는데, 예전 항해하던 사람들이 통나무에 일정한 간격으로 매듭이 중간에 묶인 줄을 바다에 던져서 모래시계가 다 떨어졌을 때 줄이 얼마나 지나갔는지를 기록해 계산, 배의 속도를 계산하고 선장이 항해일지에 기록.
+    그것의 유래로 log가 기록하다 라는 의미로 사용.
+
+
+ImportError: No module named flask.ext.mysql
+- https://stackoverflow.com/questions/33241924/importerror-no-module-named-flask-ext-mysql
+
+
+ImportError: cannot import name 'generate_password_hash'
+- https://stackoverflow.com/questions/61538427/importerror-cannot-import-name-generate-password-hash
+
+
+static 을 불러오지 못하는 오류
+- .. 폴더명을 statics <- s 가 붙어있어서 계속 404 오류가 났었음..
+정적파일 문제 뒤져보고 1시간동안 고민함..
+
+
+
+UnboundLocalError: local variable 'cursor' referenced before assignment
+-https://stackoverflow.com/questions/32493631/unboundlocalerror-local-variable-cursor-referenced-before-assignment
+
+{"error": "(1305, 'PROCEDURE userlist.sp_createUser does not exist')"}
+- 해결중
+
+갈아엎었음
+11/21~22
+
+mysql오류 could not acquire management access for administration 
+- 어제 잘되던 mysql 이 갑자기 연동이 안되서 워크벤치 켜보니
+    Could not acquire management access for administration
+    RuntimeError: Unalbe to execute command chcp.
+    Please make sure that the C:\Windows\System32 directory is in your PATH environment variable.
+
+    1 c:\program files\mysql\myql server\bin에서 mysql, mysqld를 실행시켜보았다.
+    실패...
+
+    2 에러 내용을 분석해보니 admin 어쩌구 저쩌구 있길래, 첫번째로 권한 문제인가??  라고 생각하고 관리자 권한으로 workbench를 실행했다.
+    또 실패....
+
+    3 그렇다면 chcp이건 encoding 4349엿나..? 무슨 인코딩 문제였던 것 같은데... 그래서 mysql 실행시키는 법을 찾아보았더니
+    cmd에서 net구문을 써서 실행하면 된다고 했다.
+    net start mysql을 했지만 찾을 수 없다고 나와서...  --install을 하고 해봤지만 결국 해결 안됨...
+    실패..
+ 
+    4 마지막으로 window32 PATH enviroment어쩌구 저쩌구가 나왔으니, 저 주소를 환경변수로 추가해보았다.
+    그치만 실패....
+
+    5 혹시 services.msc를 입력하여 서비스를 확인해보았다.
+    MySQL80이 시작 유형은 자동, 상태는 공백   
+    실행 시켜주고 다시하니 제대로 작동함
+    해결됨
+
+
+
+웹 페이지 성능 속도를 높이기 위한 몇가지
+    1. html <script> 태그 위치 변경하기
+    보통 아래와 같이 <head></head>에 <script> 태그를 적는 경우가 많은데 HTML을 읽는 과정에 무거운script가 포함되어 있다면 
+    해당 script 로드와 실행을 위해 중단되는 시점이 생겨 그만큼 disply에 지연이 발생한다. 
+    웹 페이지는 가장 처음에 브라우저는 읽어들인 문서를 파싱하여 최종적으로 어떤 내용을 페이지에 렌더링할지 결정한다. 
+    파싱이 끝나고 DOM트리가 생기기전 자바스크립트가 실행되어 DOM조작을 할 경우 에러가 발생할 수 있다. 
+
+    이러한 이유로 script는 html의 body가 끝나기 바로 직전에 적는 것이 좋다. 
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <meta charset="UTF-8">
+    <title></title >                
+    </head>
+    <body>
+        ......
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="./js/lib/jquery-3.1.1.js"></script>
+        <script src="./js/lib/bootstrap.min.js"></script>
+    </body>
+    </html>
+    (참고로 CSS는 가능한 빨리 적용되어야 하기 때문에 <head> 태그 사이에 위치시키는 것이 좋다.)
+
+    
+    2. js, css, img 캐싱하기
+    일반적으로 웹 사이트는 성능상 이점을 얻기 위해 gif/image/css/js 등과 같은 정적 자원(static resource)은 Nginx와 같은 웹 서버에서 캐시한다. 이런 정적 컨텐츠들을 NginX에서 대신 처리하는 것으로 응답 속도를 높일 수 있으며, WAS에 대한 부담을 줄일 수 있다. 컨텐츠들을 메모리에 캐시할 경우 서비스 할 경우 고성능의 웹 서비스를 만들 수도 있다.
+
+    nginx에서 statif file의 cache 설정하는 방법은 다음과 같다. 
+
+        location ~* \.(?:jpg|jpeg|gif|png|ico|cur|gz|svg|svgz|mp4|ogg|ogv|webm|htc)$ {
+            expires 1M;
+            access_log off;
+            add_header Cache-Control "public";
+        }
+
+        location ~* \.(?:css|js)$ {
+            expires 1y;
+            access_log off;
+            add_header Cache-Control "public";
+        }
+
+    3. 3. javascript 압축하기
+    js library 소스의 주석 및 공백들을 줄여 성능 개선에 도움을 준다. 
+
+    왼쪽은 압축 전, 오른쪽은 압축 후의 모습이다. 주석과 공백을 줄여 소스를 일렬로 나열한 형태가 된다. 
+    js를 압축하는 tool은 아래 링크를 클릭한다. 
+    JavaScript Minifier : http://dean.edwards.name/packer/
+    
+    참조 : https://soye0n.tistory.com/245
+
+
+Holder - 클라이언트 측에서 이미지 예제 제공
+    Holder 소개
+    Holder는 지정한 자리에 이미지를 대체하는 라이브러리로, Cnavas와 SVG를 사용하여 색상, 폰트, 창의 크기 변화에 대한 동작을 설정할 수 있다. 
+    무엇보다 유동적으로 창 크기가 변경되는 환경을 지원하기 때문에 활용도가 높다.
+
+    참조 : https://webdir.tistory.com/437
+
+
+View function mapping is overwriting an existing endpoint function: login    
+    - 이유 ) 하나의 파이썬 파일에 동일한 함수가 선언되어 있어서 발생함.
+
+11/21 19:00 웹페이지 들어가보니  책이미지파일이 404를 뱉으며 로딩이 안되는 오류 
+    127.0.0.1 - - [22/Nov/2021 19:01:56] "GET /static/img/book_img/1.png HTTP/1.1" 304 -
+    127.0.0.1 - - [22/Nov/2021 19:01:56] "GET /static/img/book_img/2.png HTTP/1.1" 304 -
+    127.0.0.1 - - [22/Nov/2021 19:01:56] "GET /static/js/assets/js/vendor/popper.min.js.map HTTP/1.1" 404 -
+    127.0.0.1 - - [22/Nov/2021 19:01:56] "GET /static/img/book_img/3.png HTTP/1.1" 304 -
+    127.0.0.1 - - [22/Nov/2021 19:01:56] "GET /static/js/dist/js/bootstrap.min.js.map HTTP/1.1" 200 -
+    127.0.0.1 - - [22/Nov/2021 19:01:56] "GET /static/img/book_img/4.png HTTP/1.1" 404 -
+    127.0.0.1 - - [22/Nov/2021 19:01:56] "GET /static/img/book_img/5.png HTTP/1.1" 404 -
+    127.0.0.1 - - [22/Nov/2021 19:01:56] "GET /static/img/book_img/6.png HTTP/1.1" 404 -
+    127.0.0.1 - - [22/Nov/2021 19:01:56] "GET /static/img/book_img/7.png HTTP/1.1" 304 -
+    127.0.0.1 - - [22/Nov/2021 19:01:56] "GET /static/img/book_img/8.png HTTP/1.1" 304 -
+    -> jpg와 png 확장자가 섞여있어서? 해결중
+    변환 프로그램으로 싹 png 로 바꾸니 바로 로딩 잘됨 
+    127.0.0.1 - - [22/Nov/2021 19:10:06] "GET / HTTP/1.1" 200 -
+    127.0.0.1 - - [22/Nov/2021 19:10:06] "GET /static/img/book_img/1.png HTTP/1.1" 200 -
+    127.0.0.1 - - [22/Nov/2021 19:10:06] "GET /static/img/book_img/2.png HTTP/1.1" 200 -
+    127.0.0.1 - - [22/Nov/2021 19:10:06] "GET /static/img/book_img/3.png HTTP/1.1" 200 -
+    127.0.0.1 - - [22/Nov/2021 19:10:06] "GET /static/img/book_img/4.png HTTP/1.1" 200 -
+    127.0.0.1 - - [22/Nov/2021 19:10:06] "GET /static/img/book_img/5.png HTTP/1.1" 200 -
+    127.0.0.1 - - [22/Nov/2021 19:10:06] "GET /static/img/book_img/6.png HTTP/1.1" 200 -
+    127.0.0.1 - - [22/Nov/2021 19:10:06] "GET /static/img/book_img/7.png HTTP/1.1" 200 -
+    127.0.0.1 - - [22/Nov/2021 19:10:06] "GET /static/img/book_img/8.png HTTP/1.1" 200 -
+    127.0.0.1 - - [22/Nov/2021 19:10:06] "GET /static/js/assets/js/vendor/popper.min.js HTTP/1.1" 304 -
+    127.0.0.1 - - [22/Nov/2021 19:10:06] "GET /static/js/dist/js/bootstrap.min.js HTTP/1.1" 304 -  
+    127.0.0.1 - - [22/Nov/2021 19:10:06] "GET /static/js/assets/js/vendor/holder.min.js HTTP/1.1" 304 -
+    ? 근데 아까 위에 로그에서는 popper.min.js 가 404 를 뱉었는데 아래는 304로 잘댐..음... 모지.. 몰?루
+
+
+11_22_5 정규식의 문자 클래스 
+    - https://docs.microsoft.com/ko-kr/dotnet/standard/base-types/character-classes-in-regular-expressions
+    공백이 아닌 문자: \S
+    10진수 문자: \d
+    숫자가 아닌 문자: \D
+    단어 문자: \w
+    단어가 아닌 문자: \W
+
+11_22_6 해결해야할것
+     아직 책 메인 화면 해결이 안 되었음
+    가입하기 - 작성, 문자열특성 까지 다 되는데 
+    가입한뒤 플래시로 "가입성공!" 이안뜨고 가입한뒤에 -> '/' 로 간뒤에 다시 '가입하기' 누르면 뜸.. ㅁ..?ㄹ??    해결하도록하자.
+
+    
+
+https://iboxcomein.com/%EC%9C%88%EB%8F%84%EC%9A%B0-%EC%BB%B4%ED%93%A8%ED%84%B0-pc-%EB%81%8C%EB%95%8C-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8-%EC%A2%85%EB%A3%8C-%EC%A0%80%EC%9E%A5-%EC%95%8C%EB%A6%BC-%EC%97%86%EC%9D%B4-%EB%AC%B4/
+
+별점 
+    https://melthleeth.tistory.com/entry/HTML-CSS%EB%A1%9C-%EB%B3%84%EC%B0%8D%EA%B8%B0-Star-Rating
+    html쪽 코드는 다음과 같다.
+    
+    <div class="star-ratings">
+        <div 
+        class="star-ratings-fill space-x-2 text-lg"
+        :style="{ width: ratingToPercent + '%' }"
+        >
+            <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+        </div>
+        <div class="star-ratings-base space-x-2 text-lg">
+            <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+        </div>
+    </div>
+    
+
+    현재 Vue를 사용하고 있기 때문에 width 속성은 computed로 api로 넘어온 평균 평점 값을 계산하여 percentage로 변환하여 스타일 바인딩을 이용했다. 
+
+    return값에 1.5를 더하여 주는 이유는 half star일 시 미세하게 절반이 안되어보여서 보여지는 값을 조정하기 위해 추가한 offset 값이다.
+
+    ratingToPercent() {
+      const score = +this.restaurant.averageScore * 20;
+      return score + 1.5;
+        }
+ 
+
+    CSS는 다음과 같이 주었다. space-x-2, text-lg는 tailwind CSS의 클래스이다.
+
+     
+
+    만약 채워진 별을 구현하고 싶다면 -webkit-text-fill, webkit-text-stroke 관련된 속성은 지우면 된다.
+
+    webkit 관련 코드는 기존의 색상을 override하기 때문에 stroke를 주고 싶다면 fill color도 같이 구현해야 한다!!
+
+     
+
+    base가 별점의 뼈대를 담당, fill이 채워졌을 때의 별점 스타일이다.
+
+     
+
+     
+
+    .star-ratings {
+        color: #aaa9a9; 
+        position: relative;
+        unicode-bidi: bidi-override;
+        width: max-content;
+        -webkit-text-fill-color: transparent; /* Will override color (regardless of order) */
+        -webkit-text-stroke-width: 1.3px;
+        -webkit-text-stroke-color: #2b2a29;
+    }
+    
+    .star-ratings-fill {
+        color: #fff58c;
+        padding: 0;
+        position: absolute;
+        z-index: 1;
+        display: flex;
+        top: 0;
+        left: 0;
+        overflow: hidden;
+        -webkit-text-fill-color: gold;
+    }
+    
+    .star-ratings-base {
+        z-index: 0;
+        padding: 0;
+    }
+
+
+html 배경음악 자동재생 ... 크롬정책변경으로 인한 대응, audio autoplay in HTML
+    https://doolyit.tistory.com/169

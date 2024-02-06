@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <div class="row justify-content-md-center">
+      <div class="row mb-3 text-center">
+        {% for book in books_info %}
+        <div class="card  mr-md-3 mb-4 box-shadow" style="width: 16.5rem;">
+          <div class="card-header" >
+            <img src="{{ url_for('static', filename='img/book_img/'+img[loop.index - 1]|string+'.png') }}"> </img>
+          </div>
+          <div class="card-body">
+            <h6 class="card-title pricing-card-title"><a class="p-2 text-blue" href="/book-info/{{book.id}}">{{book.book_name}}</a></h6>
+            <ul class="list-unstyled mt-3 mb-4" style="position: absolute; bottom: 5%; left: 36%;">
+              <li><div class="star-ratings" style="margin-left: 0;">
+                <div 
+                  class="star-ratings-fill space-x-2 text-lg" style="width:{{book.rate * 20}}%">
+                  <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                </div>
+                <div class="star-ratings-base space-x-2 text-lg">
+                  <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                </div>
+              </div>
+            </li>
+            <li>{{date[loop.index - 1][0]}}</li>
+            <li>{{date[loop.index - 1][1]}}</li>
+            </ul>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+{% endblock %}
