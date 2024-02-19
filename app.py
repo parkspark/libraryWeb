@@ -11,11 +11,15 @@ import bcrypt
 import re
 import math
 from datetime import date
+from dotenv import load_dotenv
+import os 
+
+load_dotenv()
 
 app = Flask(__name__)
 
 app.secret_key = 'dev'
-app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+pymysql://root:akdldptmzbdpf1@@localhost:3306/book_db" 
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("SQLALCHEMY_DATABASE_URI")
 app.config['SQLALCHEMY_POOL_SIZE'] = 1
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
