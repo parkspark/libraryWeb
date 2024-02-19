@@ -1,5 +1,5 @@
 from flask import Flask, render_template, json, request, session, flash, jsonify, redirect, url_for
-from flaskext.mysql import MySQL
+from flask_mysqldb import MySQL
 import pymysql
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
@@ -15,14 +15,19 @@ from datetime import date
 app = Flask(__name__)
 
 app.secret_key = 'dev'
-app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+pymysql://root:1234@localhost:3306/book_db" 
+app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+pymysql://root:akdldptmzbdpf1@@localhost:3306/book_db" 
 app.config['SQLALCHEMY_POOL_SIZE'] = 1
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-db = SQLAlchemy(app)
+# db = SQLAlchemy(app)
+# db.init_app(app)
+# migrate = Migrate(app, db)
+# migrate.init_app(app, db)
+
+db = SQLAlchemy()
 db.init_app(app)
 migrate = Migrate(app, db)
-migrate.init_app(app, db)
+
 
 from model import *
 
